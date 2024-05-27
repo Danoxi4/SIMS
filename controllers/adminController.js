@@ -1,4 +1,5 @@
 const Student = require('../models/student'); // Replace with your path
+const Teacher = require('../models/teacher'); // Replace with your path
 const bcrypt = require('bcrypt'); // For password hashing (optional)
 
 async function registerStudent(req, res) {
@@ -26,4 +27,33 @@ async function registerStudent(req, res) {
   }
 }
 
-module.exports = registerStudent;
+
+async function registerTeacher(req, res) {
+    try {
+      // Destructure required information from request body
+      const { firstName, lastName, email, password } = req.body;
+      // Optional: Password Hashing (using bcrypt)
+      const hashedPassword = await bcrypt.hash(password, 10); // Adjust cost factor as needed
+      // Create a new teacher with destructured data (and hashed password)
+      const dateEmploy = Date.now();
+      const newTeacher = new Teacher({
+        firstName,
+        lastName,
+        email,
+        dateEmploy,
+        password: hashedPassword ? hashedPassword : password,  // Use hashed password if available
+      });
+      await newTeacher.save();
+      res.status(201).json({ message: 'Teacher registered successfully!' });
+    } catch (error) {
+      console.error(error);
+      // Handle potential errors (e.g., email conflict)
+      if (error.code === 11000) { // Duplicate key error (unique email)
+        res.status(400).json({ message: 'Email already exists!' });
+      } else {
+        res.status(500).json({ message: 'Error registering teacher' });
+      }
+    }
+  }
+
+module.exports = { registerStudent, registerTeacher };
