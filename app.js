@@ -7,9 +7,7 @@ app.use(express.json());
 
 // Add routes for your application functionalities (placeholder for now)
 app.use('/api/students', require('./routes/students')); // Replace with actual route logic
-app.use('/api/teachers', require('./routes/teachers')); // Replace with actual route logic
-app.use('/api/courses', require('./routes/courses')); // Replace with actual route logic
-// ... Add routes for other functionalities
+
 
 // Error handling middleware (optional but recommended)
 app.use((err, req, res, next) => {
