@@ -39,6 +39,12 @@ const StudentSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  role: {
+    type: String,
+    enum: ['teacher', 'student', 'Admin'],
+    required: true,
+    default: 'student', // Set default to "teacher"
+  },
 });
 
 module.exports = mongoose.model('Student', StudentSchema);

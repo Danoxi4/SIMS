@@ -1,21 +1,25 @@
 const express = require('express');
+const errorHandler = require('./middleware/errorHandler'); // Replace with your path
+const logger = require('./middleware/logger');
+//const studentController = require('./controllers/studentController');
+const adminRouter = require('./routes/adminRouter');
+
 const app = express();
-const port = process.env.PORT || 3000; // Use environment variable for port or default to 3000
-
-// Configure body parsing middleware (to handle form data or JSON payloads)
 app.use(express.json());
+app.use(logger)
+app.post('/admin', adminRouter);
 
-// Add routes for your application functionalities (placeholder for now)
-app.use('/api/students', require('./routes/students')); // Replace with actual route logic
 
+app.use((req, res, next) => {
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err); // Pass the error to the error handling middleware
+  });
 
-// Error handling middleware (optional but recommended)
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Internal Server Error');
-});
+app.use(errorHandler)
+// ... other routes for your application
+const port = process.env.PORT || 3000; // Use environment variable or default port
 
-// Start the server and listen for connections
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });

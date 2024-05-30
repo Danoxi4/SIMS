@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt'); // For password hashing (optional)
 async function registerStudent(req, res) {
   try {
     // Destructure required information from request body
-    const { firstName, lastName, email, password, gradeLevelId } = req.body;
+    const { firstName, lastName, email, password } = req.body;
     // Optional: Password Hashing (using bcrypt)
     const hashedPassword = await bcrypt.hash(password, 10); // Replace 10 with desired cost factor
     // Use Date.now() to get current timestamp for registration date
@@ -15,9 +15,9 @@ async function registerStudent(req, res) {
       firstName,
       lastName,
       email,
-      password: hashedPassword ? hashedPassword : password,  // Use hashed password if available
+      password: hashedPassword,  // Use hashed password if available
       dateOfRegistration,
-      gradeLevelId,
+    //  gradeLevelId,
     });
     await newStudent.save();
     res.status(201).json({ message: 'Student registered successfully!' });
