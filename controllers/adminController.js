@@ -2,6 +2,43 @@ const Student = require('../models/student'); // Replace with your path
 const Teacher = require('../models/teacher'); // Replace with your path
 const bcrypt = require('bcrypt'); // For password hashing (optional)
 
+const { sendEmail } = require('../utils/emailService');
+
+const sendEmailToStudents = async (req, res) => {
+    try {
+        const students = await Student.find({}, 'email');
+        const emails = students.map(student => student.email);
+        await sendEmail(emails, req.body.subject, req.body.message);
+        res.status(200).send('Emails sent to students');
+    } catch (error) {
+        res.status(500).send('Error sending emails to students');
+    }
+};
+
+const sendEmailToTeachers = async (req, res) => {
+    try {
+        const teachers = await Teacher.find({}, 'email');
+        const emails = teachers.map(teacher => teacher.email);
+        await sendEmail(emails, req.body.subject, req.body.message);
+        res.status(200).send('Emails sent to teachers');
+    } catch (error) {
+        res.status(500).send('Error sending emails to teachers');
+    }
+};
+
+const sendEmailToAll = async (req, res) => {
+    try {
+        const students = await Student.find({}, 'email');
+        const teachers = await Teacher.find({}, 'email');
+        const emails = [...students.map(student => student.email), ...teachers.map(teacher => teacher.email)];
+        await sendEmail(emails, req.body.subject, req.body.message);
+        res.status(200).send('Emails sent to all');
+    } catch (error) {
+        res.status(500).send('Error sending emails to all');
+    }
+};
+
+
 async function registerStudent(req, res) {
   try {
     // Destructure required information from request body
@@ -56,4 +93,10 @@ async function registerTeacher(req, res) {
     }
   }
 
-module.exports = { registerStudent, registerTeacher };
+module.exports = { 
+  registerStudent, 
+  registerTeacher,
+  sendEmailToStudents, 
+  sendEmailToTeachers,
+  sendEmailToAll
+};
