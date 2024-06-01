@@ -40,6 +40,10 @@ const TeacherSchema = new mongoose.Schema({
     required: true,
     default: 'teacher', // Set default to "teacher"
   },
+  isRetired: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model('Teacher', TeacherSchema);
