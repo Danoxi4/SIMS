@@ -322,6 +322,38 @@ const updateTeacherRetirement = async (req, res) => {
   }
 };
 
+const deleteStudent = async (req, res) => {
+  const { studentId } = req.params;
+
+  try {
+      const student = await Student.findByIdAndDelete(studentId);
+      
+      if (!student) {
+          return res.status(404).send('Student not found');
+      }
+
+      res.status(200).send('Student deleted successfully');
+  } catch (error) {
+      res.status(500).send('Error deleting student');
+  }
+};
+
+const deleteTeacher = async (req, res) => {
+  const { teacherId } = req.params;
+
+  try {
+      const teacher = await Teacher.findByIdAndDelete(teacherId);
+      
+      if (!teacher) {
+          return res.status(404).send('Teacher not found');
+      }
+
+      res.status(200).send('Teacher deleted successfully');
+  } catch (error) {
+      res.status(500).send('Error deleting teacher');
+  }
+};
+
 
 module.exports = { 
   registerStudent, 
@@ -340,4 +372,6 @@ module.exports = {
   updateTeacherSubject,
   updateTeacherSuspension,
   updateTeacherRetirement,
+  deleteStudent,
+  deleteTeacher
 };

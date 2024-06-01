@@ -10,7 +10,6 @@ const { registerStudent,
         updateStudentWithdrawal,
         updateStudentSuspension
     } = require('../controllers/adminController');
-const logger = require('../middleware/logger');
 
 const router = express.Router();
 router.post('/registerStudent', registerStudent);
@@ -26,12 +25,16 @@ router.put('/:studentId/updateGradeLevel', updateStudentGradeLevel);
 router.put('/:studentId/updateRedMarks', updateStudentRedMarks);
 router.put('/:studentId/updateSuspension', updateStudentSuspension);
 router.put('/:studentId/updateWithdrawal', updateStudentWithdrawal);
+router.delete('/:studentId', deleteStudent);
+
 
 router.get('/:teacherId', getTeacherById);
 router.put('/:teacherId/updateName', updateTeacherName);
 router.put('/:teacherId/updateSubject', updateTeacherSubject);
 router.put('/:teacherId/updateSuspension', updateTeacherSuspension);
 router.put('/:teacherId/updateRetirement', updateTeacherRetirement);
+router.delete('/:teacherId', deleteTeacher);
+
 
 // Additional routes for student functionalities...
 
